@@ -67,9 +67,13 @@ resource "azurerm_app_service" "main" {
 
   app_settings = {
     "WEBSITE_NODE_DEFAULT_VERSION" = "10.15.2"
-    "ApiUrl"                       = "https://backend.tailwindtraders.com/webbff/v1"
-    "ApiUrlShoppingCart"           = "https://backend.tailwindtraders.com/cart-api"
+    "ApiUrl"                       = ""
+    "ApiUrlShoppingCart"           = ""
+    "MongoConnectionString"        = ""
+    "SqlConnectionString"          = ""
     "productImagesUrl"             = "https://raw.githubusercontent.com/microsoft/TailwindTraders-Backend/master/Deploy/tailwindtraders-images/product-detail"
+    "Personalizer__ApiKey"         = ""
+    "Personalizer__Endpoint"       = ""
   }
 
   tags = local.tags
