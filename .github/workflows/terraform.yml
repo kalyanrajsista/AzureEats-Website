@@ -31,7 +31,7 @@ jobs:
 
     - name: Setup terraform
       id: setup
-      uses: hashicorp/setup-terraform@v1.1.0
+      c
       with:
           terraform_version: 0.12.26
 
@@ -64,10 +64,6 @@ jobs:
       run: |
         echo "##[set-output name=APP_SERVICE_NAME;]$(terraform output app_service_name)"
 
-    - name: print Output
-      with:
-        name: steps.output
-        
   deploy:
     name: 'Setup Deployment Center in App Service'
     runs-on: ubuntu-latest
