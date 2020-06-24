@@ -63,7 +63,8 @@ jobs:
     - name: Get Azure App Service Name End point
       run: |
         echo ::set-env name=APP_SERVICE_NAME::$(terraform output app_service_name)
-
+        echo $APP_SERVICE_NAME
+        
   deploy:
     name: 'Setup Deployment Center in App Service'
     runs-on: ubuntu-latest
