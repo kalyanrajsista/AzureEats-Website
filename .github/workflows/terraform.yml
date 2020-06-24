@@ -26,22 +26,28 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      uses: hashicorp/setup-terraform@v1.1.0
+      with:
+        terraform_wrapper: true
 
     - name: Setup terraform
-      uses: hashicorp/setup-terraform@v1.1.0
+      id: setup
       with:
           terraform_version: 0.12.26
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      id: init
       run: terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
+      id: fmt
       run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      id: plan
       run: terraform plan
 
       # On push to master, build or change infrastructure according to Terraform configuration files
@@ -50,18 +56,20 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve
 
-    - name: Terraform Output
-      id: terraform
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 0.12.26
-        tf_actions_subcommand: 'output'
+    #- name: Terraform Output
+    #  id: terraform
+    #  uses: hashicorp/setup-terraform@v1.1.0
+    #  with:
+    #    tf_actions_version: 0.12.26
+    #    tf_actions_subcommand: 'output'
 
-    - name: Get Azure App Service Name End point
-      run: |
-        sudo apt-get install jq
-        APP_SERVICE_NAME=$(echo ${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.app_service_id.value')
-        echo $APP_SERVICE_NAME
+    - run: echo ${{ steps.plan.outputs.stdout }}
+
+    #- name: Get Azure App Service Name End point
+    #  run: |
+    #    sudo apt-get install jq
+    #    APP_SERVICE_NAME=$(echo ${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.app_service_name.value')
+    #    echo $APP_SERVICE_NAME
 
   deploy:
     name: 'Setup Deployment Center in App Service'
@@ -74,3 +82,9 @@ jobs:
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az webapp deployment source config --branch $branch --manual-integration --name $AppServiceName --repo-url $GitHubRepo --resource-group $ResourceGroupName
