@@ -80,4 +80,4 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az webapp deployment source config --branch $branch --manual-integration --name ${{ secrets.APP_SERVICE_NAME }} --repo-url ${{ secrets.SOURCE_REPO }} --resource-group ${{ secrets.RESOURCE_GROUP_NAME }}
+          az webapp deployment source config --branch ${{ secrets.BRANCH }} --manual-integration --name ${{ secrets.APP_SERVICE_NAME }} --repo-url ${{ secrets.SOURCE_REPO }} --resource-group ${{ secrets.RESOURCE_GROUP_NAME }}
