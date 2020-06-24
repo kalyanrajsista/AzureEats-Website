@@ -52,19 +52,18 @@ jobs:
 
     - name: Terraform Output
       id: terraform
-      uses: hashicorp/setup-terraform@v1.1.0
+      uses: hashicorp/terraform-github-actions@master
       with:
         tf_actions_version: 0.12.26
         tf_actions_subcommand: 'output'
-        tf_actions_working_dir: '.'
 
     - name: Use Terraform Output
-      run: echo ${{ steps.terraform.ouputs.tf_actions_plan_output }}
+      run: echo ${{ steps.terraform.outputs.tf_actions_output  }}
 
     - name: Get Azure App Service Name End point
       run: |
         sudo apt-get install jq
-        APP_SERVICE_NAME=$(echo ${{ steps.terraform.outputs.tf_actions_plan_output }} | jq -r '.app_service_id')
+        APP_SERVICE_NAME=$(echo ${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.app_service_id')
         echo $APP_SERVICE_NAME
 
   deploy:
