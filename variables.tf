@@ -17,10 +17,12 @@ variable "azurerm_tenant_id" {
 
 variable "environment" {
   description = "The name of the environment to create i.e. acceptance, production, staging"
+  default     = "poc"
 }
 
 variable "name_prefix" {
   description = "Prefix for resource names."
+  default     = "terraform-lz"
 }
 
 variable "location" {
@@ -36,6 +38,7 @@ variable "plan" {
 
 variable "application" {
   description = "Type of Application."
+  default     = "challenge1"
 }
 
 variable "created_by" {
@@ -44,10 +47,12 @@ variable "created_by" {
 
 variable "app_service_plan_sku_tier" {
   description = "App Service plan's SKU tier"
+  default     = "Standard"
 }
 
 variable "app_service_plan_sku_size" {
   description = "App Service plan's SKU size"
+  default     = "S1"
 }
 
 variable "github_repo" {
@@ -92,10 +97,7 @@ variable "service_objective_name" {
 
 variable "sql_admin_username" {
   description = "The administrator username of the SQL Server."
-}
-
-variable "sql_password" {
-  description = "The administrator password of the SQL Server."
+  default     = "mradministrator"
 }
 
 variable "start_ip_address" {

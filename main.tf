@@ -84,6 +84,12 @@ resource "azurerm_app_service" "main" {
   tags = local.tags
 }
 
+resource "random_password" "sql_password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
+
 resource "azurerm_sql_database" "db" {
   name                             = "${var.name_prefix}${var.application}sqldb"
   resource_group_name              = data.azurerm_resource_group.main.name
@@ -103,7 +109,7 @@ resource "azurerm_sql_server" "server" {
   location                     = data.azurerm_resource_group.main.location
   version                      = var.server_version
   administrator_login          = var.sql_admin_username
-  administrator_login_password = var.sql_password
+  administrator_login_password = random_password.sql_password
 
   tags = local.tags
 }
@@ -137,12 +143,12 @@ resource "azurerm_sql_firewall_rule" "fw" {
   end_ip_address      = var.end_ip_address
 }
 
-resource "null_resource" "configure-git" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = "powershell.exe -File ${path.cwd}/config-github.ps1 -SubscriptionId ${var.azurerm_subscription_id} -AppId ${var.azurerm_client_id} -Password \"${var.azurerm_client_secret}\" -TenantId ${var.azurerm_tenant_id} -AppServiceName ${azurerm_app_service.main.name} -ResourceGroupName ${data.azurerm_resource_group.main.name} -GitHubRepo ${var.github_repo}"
-  }
-}
+#resource "null_resource" "configure-git" {
+#  triggers = {
+#    always_run = "${timestamp()}"
+#  }
+#
+#  provisioner "local-exec" {
+#    command = "powershell.exe -File ${path.cwd}/config-github.ps1 -SubscriptionId ${var.azurerm_subscription_id} -AppId ${var.azurerm_client_id} -Password \"${var.azurerm_client_secret}\" -TenantId ${var.azurerm_tenant_id} -AppServiceName ${azurerm_app_service.main.name} -ResourceGroupName ${data.azurerm_resource_group.main.name} -GitHubRepo ${var.github_repo}"
+#  }
+#}
