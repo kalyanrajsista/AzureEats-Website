@@ -1,20 +1,3 @@
-# Variables
-variable "azurerm_subscription_id" {
-  description = "The Azure subscription ID to use."
-}
-
-variable "azurerm_client_id" {
-  description = "The Azure Application client ID to use."
-}
-
-variable "azurerm_client_secret" {
-  description = "The Azure Application client secret to use."
-}
-
-variable "azurerm_tenant_id" {
-  description = "The Azure tenant ID to use."
-}
-
 variable "environment" {
   description = "The name of the environment to create i.e. acceptance, production, staging"
   default     = "poc"
@@ -39,10 +22,6 @@ variable "plan" {
 variable "application" {
   description = "Type of Application."
   default     = "challenge1"
-}
-
-variable "created_by" {
-  description = "Creator of these resources"
 }
 
 variable "app_service_plan_sku_tier" {
