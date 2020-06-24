@@ -76,6 +76,10 @@ jobs:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    #
+    # Need to get terraform output from previous step and send it to az cli deployment
+    # currently setup to run using secrets
+    #
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
