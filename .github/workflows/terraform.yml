@@ -60,9 +60,10 @@ jobs:
       id: output
       run: terraform output app_service_name
 
-    env:
-      app_service_name: ${{steps.output}}
-      
+    - name: Get Azure App Service Name End point
+      run: |
+        echo ::set-env name=APP_SERVICE_NAME::$(terraform output app_service_name)
+
   deploy:
     name: 'Setup Deployment Center in App Service'
     runs-on: ubuntu-latest
