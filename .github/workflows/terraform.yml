@@ -31,7 +31,7 @@ jobs:
 
     - name: Setup terraform
       id: setup
-      c
+      uses: hashicorp/setup-terraform@v1.1.0
       with:
           terraform_version: 0.12.26
 
