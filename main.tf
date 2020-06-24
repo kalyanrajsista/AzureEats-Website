@@ -109,7 +109,7 @@ resource "azurerm_sql_server" "server" {
   location                     = data.azurerm_resource_group.main.location
   version                      = var.server_version
   administrator_login          = var.sql_admin_username
-  administrator_login_password = random_password.sql_password
+  administrator_login_password = random_password.sql_password.result
 
   tags = local.tags
 }
