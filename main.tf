@@ -15,17 +15,17 @@ resource "azurerm_resource_group" "main" {
 #
 # Get information about existing resource group
 #
-data "azurerm_resource_group" "main" {
-  name = azurerm_resource_group.main.name
-}
+#data "azurerm_resource_group" "main" {
+#  name = azurerm_resource_group.main.name
+#}
 
 #
 # App Service Plan for webapp
 #
 resource "azurerm_app_service_plan" "main" {
   name                = "${var.name_prefix}-${var.application}-${var.environment}-sp"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
   kind                = local.os_type
 
   sku {
@@ -39,19 +39,19 @@ resource "azurerm_app_service_plan" "main" {
 #
 # Data resource for app service plan - webapp
 #
-data "azurerm_app_service_plan" "main" {
-  name                = azurerm_app_service_plan.main.name
-  resource_group_name = data.azurerm_resource_group.main.name
-}
+#data "azurerm_app_service_plan" "main" {
+#  name                = azurerm_app_service_plan.main.name
+#  resource_group_name = data.azurerm_resource_group.main.name
+#}
 
 #
 # Web App
 #
 resource "azurerm_app_service" "main" {
   name                = "${var.name_prefix}-${var.application}-${var.environment}"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
-  app_service_plan_id = data.azurerm_app_service_plan.main.id
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  app_service_plan_id = azurerm_app_service_plan.main.id
 
   site_config {
     default_documents = [
