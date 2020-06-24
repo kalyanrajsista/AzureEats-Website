@@ -92,8 +92,8 @@ resource "random_password" "sql_password" {
 
 resource "azurerm_sql_database" "db" {
   name                             = "${var.name_prefix}${var.application}sqldb"
-  resource_group_name              = data.azurerm_resource_group.main.name
-  location                         = data.azurerm_resource_group.main.location
+  resource_group_name              = azurerm_resource_group.main.name
+  location                         = azurerm_resource_group.main.location
   edition                          = var.db_edition
   collation                        = var.collation
   server_name                      = azurerm_sql_server.server.name
@@ -105,8 +105,8 @@ resource "azurerm_sql_database" "db" {
 
 resource "azurerm_sql_server" "server" {
   name                         = "${var.name_prefix}${var.application}sqlsrvr"
-  resource_group_name          = data.azurerm_resource_group.main.name
-  location                     = data.azurerm_resource_group.main.location
+  resource_group_name          = azurerm_resource_group.main.name
+  location                     = azurerm_resource_group.main.location
   version                      = var.server_version
   administrator_login          = var.sql_admin_username
   administrator_login_password = random_password.sql_password.result
@@ -116,8 +116,8 @@ resource "azurerm_sql_server" "server" {
 
 resource "azurerm_container_group" "main" {
   name                = "${var.name_prefix}${var.application}mongocontainer"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
   ip_address_type     = var.mongdb_ip_address_type
   dns_name_label      = "${var.name_prefix}${var.application}"
   os_type             = var.mongodb_os_type
@@ -137,7 +137,7 @@ resource "azurerm_container_group" "main" {
 
 resource "azurerm_sql_firewall_rule" "fw" {
   name                = "${var.name_prefix}${var.application}fwrules"
-  resource_group_name = data.azurerm_resource_group.main.name
+  resource_group_name = azurerm_resource_group.main.name
   server_name         = azurerm_sql_server.server.name
   start_ip_address    = var.start_ip_address
   end_ip_address      = var.end_ip_address
