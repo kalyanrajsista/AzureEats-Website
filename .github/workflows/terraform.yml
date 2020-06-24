@@ -57,9 +57,6 @@ jobs:
         tf_actions_version: 0.12.26
         tf_actions_subcommand: 'output'
 
-    - name: Use Terraform Output
-      run: echo ${{ steps.terraform.outputs.tf_actions_output  }}
-
     - name: Get Azure App Service Name End point
       run: |
         sudo apt-get install jq
