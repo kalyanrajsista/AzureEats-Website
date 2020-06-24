@@ -56,14 +56,9 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve
 
-    #- name: Terraform Output
-    #  id: terraform
-    #  uses: hashicorp/setup-terraform@v1.1.0
-    #  with:
-    #    tf_actions_version: 0.12.26
-    #    tf_actions_subcommand: 'output'
-
-    - run: echo ${{ steps.plan.outputs.stdout }}
+    - name: Terraform Output
+      id: output
+      run: terraform output app_service_name
 
     #- name: Get Azure App Service Name End point
     #  run: |
