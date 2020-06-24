@@ -31,6 +31,7 @@ jobs:
 
     - name: Setup terraform
       id: setup
+      uses: hashicorp/setup-terraform@v1.1.0
       with:
           terraform_version: 0.12.26
 
@@ -58,6 +59,10 @@ jobs:
     - name: Terraform Output
       id: output
       run: terraform output app_service_name
+
+    - name: Get Azure App Service Name End point
+      run: |
+        echo "##[set-output name=APP_SERVICE_NAME;]$(steps.output.outputs.APP_SERVICE_NAME)"
 
   deploy:
     name: 'Setup Deployment Center in App Service'
