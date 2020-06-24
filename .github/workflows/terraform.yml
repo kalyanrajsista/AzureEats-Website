@@ -61,6 +61,12 @@ jobs:
     - name: Use Terraform Output
       run: echo ${{ steps.terraform.ouputs.tf_actions_output }}
 
+    - name: Get Azure App Service Name End point
+      run: |
+        apt-get install jq
+        APP_SERVICE_NAME=$(echo ${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.app_service_id')
+        echo $APP_SERVICE_NAME
+
   deploy:
     name: 'Setup Deployment Center in App Service'
     runs-on: ubuntu-latest
