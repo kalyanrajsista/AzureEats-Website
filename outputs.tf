@@ -1,9 +1,14 @@
-output "id" {
+output "resource_group_name" {
+  value = ${azurerm_resource_group.main.name}
+  description = "Resource group name where all resources were deployed"
+}
+
+output "app_service_id" {
   value       = azurerm_app_service.main.id
   description = "The ID of the web app."
 }
 
-output "name" {
+output "app_service_name" {
   value       = azurerm_app_service.main.name
   description = "The name of the web app."
 }
