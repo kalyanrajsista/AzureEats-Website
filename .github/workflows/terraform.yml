@@ -31,7 +31,6 @@ jobs:
 
     - name: Setup terraform
       id: setup
-      c
       with:
           terraform_version: 0.12.26
 
