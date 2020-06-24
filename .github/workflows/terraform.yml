@@ -62,7 +62,7 @@ jobs:
 
     - name: Get Azure App Service Name End point
       run: |
-        echo "##[set-output name=APP_SERVICE_NAME;]$(steps.output.outputs.APP_SERVICE_NAME)"
+        echo "##[set-output name=APP_SERVICE_NAME;]$(steps.output)"
 
   deploy:
     name: 'Setup Deployment Center in App Service'
