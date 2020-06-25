@@ -85,5 +85,7 @@ jobs:
         inlineScript: |
           RESOURCE_GROUP_NAME=${{steps.resource_group_name.outputs.stdout}}
           APP_SERVICE_NAME=${{steps.app_service_name.outputs.stdout}}
+
           echo $RESOURCE_GROUP_NAME
-        
+          echo $APP_SERVICE_NAME
+          echo $REPOURL
