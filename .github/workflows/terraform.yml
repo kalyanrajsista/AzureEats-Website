@@ -29,6 +29,12 @@ jobs:
       with:
         terraform_wrapper: true
 
+    - name: Azure Login via CLI
+      uses: Azure/login@v1.1
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Setup terraform
       id: setup
       uses: hashicorp/setup-terraform@v1.1.0
@@ -64,21 +70,6 @@ jobs:
       id: resource_group_name
       run: terraform output -no-color resource_group_name
 
-  deploy:
-    name: 'Setup Deployment Center in App Service'
-    runs-on: ubuntu-latest
-    needs: terraform
-
-    steps:
-    - name: Azure Login via CLI
-      uses: Azure/login@v1.1
-      with:
-        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    # Need to get terraform output from previous step and send it to az cli deployment
-    # currently setup to run using secrets
-    #
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
