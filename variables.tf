@@ -50,7 +50,8 @@ variable "tags" {
   type        = map
 
   default = {
-    Created_By = "devopsottawa@outlook.com",
+    Created_By   = "devopsottawa@outlook.com",
+    Monitored_By = "Kalyan Sista"
   }
 }
 
