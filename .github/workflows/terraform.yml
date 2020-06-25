@@ -56,11 +56,11 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve
 
-    - name: Terraform Output
+    - name: Get App Service Name
       id: app_service_name
       run: terraform output -no-color app_service_name
 
-    - name: Azure Resource Group Name
+    - name: Get Azure Resource Group Name
       id: resource_group_name
       run: terraform output -no-color resource_group_name
 
@@ -83,9 +83,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          RESOURCE_GROUP_NAME=${{steps.resource_group_name.outputs.stdout}}
-          APP_SERVICE_NAME=${{steps.app_service_name.outputs.stdout}}
-
-          echo $RESOURCE_GROUP_NAME
-          echo $APP_SERVICE_NAME
+          RESOURCE_GROUP_NAME=${{ steps.resource_group_name.outputs.stdout }}
+          APP_SERVICE_NAME=${{ steps.app_service_name.outputs.stdout }}
           echo $REPOURL
+          az webapp deployment source config --branch master --name $APP_SERVICE_NAME --repo-url $REPOURL --resource-group $RESOURCE_GROUP_NAME --manual-integration
