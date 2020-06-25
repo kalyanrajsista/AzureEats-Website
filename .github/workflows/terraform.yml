@@ -77,4 +77,4 @@ jobs:
           RESOURCE_GROUP_NAME=${{ steps.resource_group_name.outputs.stdout }}
           APP_SERVICE_NAME=${{ steps.app_service_name.outputs.stdout }}
           echo $REPOURL
-          az webapp deployment source config --branch master --name $APP_SERVICE_NAME --repo-url $REPOURL --resource-group $RESOURCE_GROUP_NAME --manual-integration
+          az webapp deployment source config --branch master --name $APP_SERVICE_NAME --repo-url ${{ secrets.SOURCE_REPO }} --resource-group $RESOURCE_GROUP_NAME --manual-integration
