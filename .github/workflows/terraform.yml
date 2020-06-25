@@ -57,12 +57,12 @@ jobs:
       run: terraform apply -auto-approve
 
     - name: Terraform Output
-      id: output
-      run: terraform output app_service_name
+      id: app_service_name
+      run: terraform output -no-color app_service_name
 
-    - name: Get Azure App Service Name End point
-      run: |
-        echo "##[set-output name=APP_SERVICE_NAME;]$(steps.output.outputs.APP_SERVICE_NAME)"
+    - name: Azure Resource Group Name
+      id: resource_group_name
+      run: terraform output -no-color resource_group_name
 
   deploy:
     name: 'Setup Deployment Center in App Service'
@@ -83,4 +83,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az webapp deployment source config --branch ${{ secrets.BRANCH }} --manual-integration --name ${{ secrets.APP_SERVICE_NAME }} --repo-url ${{ secrets.SOURCE_REPO }} --resource-group ${{ secrets.RESOURCE_GROUP_NAME }}
+          RESOURCE_GROUP_NAME=${{steps.resource_group_name.outputs.stdout}}
+          APP_SERVICE_NAME=${{steps.app_service_name.outputs.stdout}}
+          echo $RESOURCE_GROUP_NAME
+        
